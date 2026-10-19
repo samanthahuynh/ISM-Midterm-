@@ -14,6 +14,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { fetchTopic, isTopicUrl, sectionsToText, wsearch, summaryToSections } from "./_lib/medlineplus.mjs";
 import { NO_STORE, clientIp, json, rateLimited, sameOrigin } from "./_lib/http.mjs";
+import { fetchLabTest, isLoinc } from "./_lib/labtests.mjs";
 
 export const config = { path: "/api/ai" };
 
@@ -92,7 +93,14 @@ export default async (req, context) => {
     let source; // { title, url, text }
     let task;
 
-    if (body?.task === "simplify") {
+    if (body?.task === "simplify" && body?.loinc !== undefined) {
+      // A lab test guide, looked up by its standard code. The user's own result is never sent.
+      if (!isLoinc(body.loinc)) return json({ error: "bad_request", message: "That isn't a valid lab test code." }, 400, NO_STORE);
+      const topic = await fetchLabTest(body.loinc, lang);
+      if (!topic) return json({ error: "not_found", message: "MedlinePlus doesn't have a guide for that test." }, 404, NO_STORE);
+      source = { title: topic.title, url: topic.url, text: sectionsToText(topic.sections) };
+      task = `Rewrite the SOURCE about "${topic.title}" in plain language: what the test checks, why it is done, how it is done, and what results can mean in general. Use 4 to 8 short paragraphs or lists. Do not interpret any particular person's result. End with one sentence suggesting the reader ask their own healthcare team what their results mean for them.`;
+    } else if (body?.task === "simplify") {
       const { url, title } = body;
       if (!isTopicUrl(url) || typeof title !== "string" || !title.trim() || title.length > 100) {
         return json({ error: "bad_request", message: "A MedlinePlus topic is required." }, 400, NO_STORE);
@@ -115,7 +123,7 @@ export default async (req, context) => {
       return json({ error: "bad_request", message: "Unknown task." }, 400, NO_STORE);
     }
 
-    const key = `${body.task}|${lang}|${source.url}|${body.term || ""}|${MODEL}`;
+    const key = `${body.task}|${lang}|${source.url}|${body.term || ""}|${MODEL}`; // never includes user-entered text
     if (cache.has(key)) return json(cache.get(key), 200, NO_STORE);
 
     if (rateLimited(clientIp(req, context), HOURLY_LIMIT)) {

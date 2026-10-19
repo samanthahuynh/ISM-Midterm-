@@ -1,10 +1,12 @@
 // GET /api/medlineplus?q=<keywords>&lang=en|es         -> search results
 // GET /api/medlineplus?url=<topic url>&title=<title>    -> one topic, structured
+// GET /api/medlineplus?loinc=<LOINC code>&lang=en|es   -> one lab test guide (MedlinePlus Connect)
 //
 // A thin proxy so the browser never calls NLM directly: it validates input,
 // returns text-only JSON (no third-party HTML), and lets Netlify's CDN cache
 // responses so we stay well within NLM's 85 requests/minute guideline.
 import { fetchTopic, isTopicUrl, summaryToSections, wsearch } from "./_lib/medlineplus.mjs";
+import { fetchLabTest, isLoinc } from "./_lib/labtests.mjs";
 import { CDN_CACHE, NO_STORE, json } from "./_lib/http.mjs";
 
 export const config = { path: "/api/medlineplus" };
@@ -18,8 +20,15 @@ export default async (req) => {
   const q = (params.get("q") || "").trim();
   const url = (params.get("url") || "").trim();
   const title = (params.get("title") || "").trim();
+  const loinc = (params.get("loinc") || "").trim();
 
   try {
+    if (loinc) {
+      if (!isLoinc(loinc)) return json({ error: "bad_request", message: "That isn't a valid lab test code." }, 400, NO_STORE);
+      const topic = await fetchLabTest(loinc, lang);
+      if (!topic) return json({ error: "not_found", message: "MedlinePlus doesn't have a guide for that test." }, 404, NO_STORE);
+      return json({ topic, source: sourceInfo(topic.lang), retrievedAt: new Date().toISOString() }, 200, CDN_CACHE);
+    }
     if (url) {
       if (!isTopicUrl(url) || !title || title.length > MAX_TERM) {
         return json({ error: "bad_request", message: "A MedlinePlus topic URL and title are required." }, 400, NO_STORE);

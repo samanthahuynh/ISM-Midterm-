@@ -10,6 +10,7 @@ be described as HIPAA compliant.** Use fictional data when demoing it.
 |---|---|---|
 | Appointment details, concerns, timeline, questions, notes | The browser's `localStorage`, on that device only | No |
 | Saved topics and procedures | `localStorage` (URL and title only) | No |
+| Health history: diagnoses, tests, results and notes the user types | `localStorage` only | No. Only the name typed in the search box goes to MedlinePlus to find a match, and only the matched page's URL or lab code is used afterwards |
 | Search words typed in the library | Sent to CareBridge's `/api/medlineplus`, which forwards them to the NLM search service | Yes, to NLM, with no identity attached |
 | A medical word for "Explain in simpler words" (if AI is on) | `/api/ai` → Anthropic | Yes, only the screened word |
 | Topic URL for "Explain the whole topic in simpler words" (if AI is on) | `/api/ai`. The server fetches the MedlinePlus text and sends it to Anthropic | Yes, no user text |
@@ -36,6 +37,13 @@ only the information the user chooses to enter.
   cached by Netlify's CDN for a day, which keeps traffic under NLM's guideline of
   85 requests per minute.
 - **Same-origin check** on the AI POST route.
+
+## Results are never interpreted
+
+The health history shows what MedlinePlus says a test checks and what results can
+mean in general, next to the user's own result exactly as they typed it, labeled
+"Not checked by CareBridge". The app never compares a value to a range, flags
+anything as normal or abnormal, or sends the value anywhere.
 
 ## Known limits (prototype)
 

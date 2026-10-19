@@ -12,6 +12,7 @@ import Visit from "./pages/Visit.jsx";
 import Procedures from "./pages/Procedures.jsx";
 import Procedure from "./pages/Procedure.jsx";
 import Notebook from "./pages/Notebook.jsx";
+import History from "./pages/History.jsx";
 
 const SIZES = { sm: 1, md: 1.12, lg: 1.25 };
 
@@ -109,7 +110,7 @@ export default function App() {
     { id: "understand", path: "/understand", label: t.nav.understand, match: ["understand", "topic"] },
     { id: "visit", path: "/visit/1", label: t.nav.visit, match: ["visit"] },
     { id: "next", path: "/next", label: t.nav.next, match: ["next", "procedure"] },
-    { id: "notebook", path: "/notebook", label: t.nav.notebook, match: ["notebook"] },
+    { id: "notebook", path: "/notebook", label: t.nav.notebook, match: ["notebook", "history"] },
   ];
   const nav = NAV.map((n) => {
     const on = n.match.includes(route.name);
@@ -191,6 +192,8 @@ export default function App() {
         return <Procedure ctx={ctx} key={route.param} />;
       case "notebook":
         return <Notebook ctx={ctx} />;
+      case "history":
+        return <History ctx={ctx} />;
       default:
         return <Landing ctx={ctx} />;
     }
@@ -319,7 +322,7 @@ export default function App() {
 </footer>
 
 {(narrow) && (<>
-<nav data-noprint="" aria-label="Primary" style={{position: "fixed", left: "0", right: "0", bottom: "0", zIndex: "45", background: "rgba(250,249,246,.96)", backdropFilter: "blur(12px)", borderTop: "1px solid #DDE4DB", display: "grid", gridTemplateColumns: "repeat(5,1fr)", padding: "6px 4px calc(6px + env(safe-area-inset-bottom))"}}>
+<nav data-noprint="" aria-label="Primary" style={{position: "fixed", left: "0", right: "0", bottom: "0", zIndex: "45", background: "rgba(250,249,246,.96)", backdropFilter: "blur(12px)", borderTop: "1px solid #DDE4DB", display: "grid", gridTemplateColumns: "repeat(5,minmax(0,1fr))", padding: "6px calc(4px + env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) calc(4px + env(safe-area-inset-left))"}}>
 {(nav).map((n, __i) => (<React.Fragment key={__i}>
 <button aria-current={n.cur} onClick={n.onClick} style={{minHeight: "54px", border: "none", background: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "5px", color: n.fg, fontSize: "12px", fontWeight: n.fw}}><span style={{width: "28px", height: "4px", borderRadius: "9px", background: n.bar}}></span>{n.label}</button>
 </React.Fragment>))}

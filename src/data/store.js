@@ -25,6 +25,9 @@ export function emptyState() {
     visitSheets: [], // { id, title, snapshot, createdAt }
     visitNotes: [], // { id, text, createdAt }
     careNotes: {}, // procedureId -> text
+    // Past diagnoses and tests the user chooses to record. Stays in this browser;
+    // only the MedlinePlus match (URL or LOINC code) is ever used to fetch content.
+    history: [], // { id, kind: "condition"|"test", name, match: {type:"topic", url, title} | {type:"loinc", code, title} | null, when: "YYYY-MM", result, note, createdAt }
   };
 }
 

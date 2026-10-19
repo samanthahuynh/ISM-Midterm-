@@ -108,6 +108,19 @@ export default function Notebook({ ctx }) {
         }),
       empty: { title: es ? "Aún no hay instrucciones guardadas." : "No care team notes yet.", body: es ? "Anote las instrucciones de su equipo en cualquier guía de procedimientos." : "Write down your care team’s instructions on any procedure guide.", cta: es ? "Ver guías" : "See guides", action: () => navigate("/next") },
     },
+    history: {
+      label: es ? "Historial de salud" : "Health history",
+      items: (s.history || []).map((h) => ({
+        meta: [h.kind === "test" ? (es ? "PRUEBA" : "TEST") : es ? "DIAGNÓSTICO" : "DIAGNOSIS", h.match ? "MEDLINEPLUS" : null].filter(Boolean).join(" · "),
+        title: h.name,
+        note: h.result || h.note || "",
+        openLabel: es ? "Ver explicación" : "See explanation",
+        onOpen: () => navigate("/history"),
+        delLabel: `${es ? "Quitar" : "Remove"} ${h.name}`,
+        onDel: () => remove("history", h.id),
+      })),
+      empty: { title: es ? "Su historial está vacío." : "Your health history is empty.", body: es ? "Agregue diagnósticos y pruebas pasadas para ver qué significan." : "Add past diagnoses and tests to see what they mean.", cta: es ? "Abrir mi historial" : "Open my health history", action: () => navigate("/history") },
+    },
     notes: { label: es ? "Notas de la cita" : "Visit notes", items: s.visitNotes },
   };
 

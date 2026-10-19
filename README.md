@@ -17,6 +17,7 @@ patients understand health topics and prepare for appointments.
 | **Topic pages** | Simple, Visual or Detailed views of the MedlinePlus summary, questions to ask, sources tab, save to Notebook | MedlinePlus (English and Spanish editions) |
 | **My Visit** | 4 steps: appointment details, concerns in the user's own words, a question builder with priority and ordering, and a printable visit sheet (save as PDF) | User's own entries plus question prompts adapted from AHRQ and NIA |
 | **Next Steps** | Procedure guides split into Before / Day of / After from MedlinePlus, logistics checklists, and a box for the user's own care-team instructions | MedlinePlus |
+| **My health history** | Add past diagnoses and tests (saved in the browser only). Each one is matched to MedlinePlus to show what it is, the symptoms MedlinePlus lists, what a test checks and what results can mean **in general**, plus ready-made questions for the next visit. CareBridge never interprets a user's own result | MedlinePlus health topics + MedlinePlus Connect lab test guides |
 | **Notebook** | Saved topics, guides, question lists, visit sheets and notes, plus "Delete all data" | Browser storage |
 | **Accessibility** | Text size, reduce motion, higher contrast, reading level, English/Spanish | — |
 | **AI (optional, off by default)** | "Explain in simpler words" for a medical word and a whole topic, grounded only in MedlinePlus text | Claude API, server side |
@@ -26,18 +27,29 @@ date it was retrieved. CareBridge doesn't write its own medical content or
 recovery timelines. If MedlinePlus doesn't cover a stage of a procedure, the
 page says so and points the user to their care team.
 
+## Use it on an iPhone
+
+CareBridge works in Safari on iPhone and can be added to the Home Screen like an
+app. Open the Netlify URL in Safari, tap **Share**, then **Add to Home Screen**.
+It opens full screen with the CareBridge icon. There's no App Store version. A
+native app would need Apple developer enrollment and review, which this
+prototype doesn't require.
+
+Every page was checked at iPhone SE, iPhone 14/15 and Pro Max widths (375, 390
+and 430 px) in English and Spanish.
+
 ## Project layout
 
 ```
 src/                     React app (Vite). UI ported from the CareBridge design template
   pages/                 Landing, Dashboard, Understand, Topic, Visit, Procedures, Procedure, Notebook
-  content/               Featured topics, procedures, question prompts, About/Privacy/Sources text (en/es)
+  content/               Featured topics, procedures, lab tests (LOINC codes), question prompts, About/Privacy/Sources text (en/es)
   data/store.js          Local storage adapter (same contract a Supabase adapter will use)
   data/demo.js           Fictional demo profile "Maya R."
   i18n/                  Prepared English/Spanish strings + translation provider interface
   services/api.js        Calls to the app's own /api routes (never to third parties directly)
 netlify/functions/
-  medlineplus.mjs        GET /api/medlineplus  MedlinePlus search and topic proxy (no key needed)
+  medlineplus.mjs        GET /api/medlineplus  MedlinePlus search, topic and lab-test proxy (no key needed)
   ai.mjs                 /api/ai               Optional Claude route (key stays on the server)
   translate.mjs          /api/translate        Placeholder for Google Cloud Translation (returns 501)
 supabase/schema.sql      Planned tables with row level security (not active)
@@ -103,6 +115,7 @@ To try the AI features locally, copy `.env.example` to `.env` and set
 
 | Integration | Status | Details |
 |---|---|---|
+| MedlinePlus Connect (lab tests) | **Live** | [`netlify/functions/_lib/labtests.mjs`](netlify/functions/_lib/labtests.mjs) |
 | MedlinePlus Web Service | **Live** | [`netlify/functions/medlineplus.mjs`](netlify/functions/medlineplus.mjs) |
 | Claude API | **Built, off by default** | [docs/AI_PLAN.md](docs/AI_PLAN.md) |
 | Supabase | **Planned.** Uses local storage + fictional data today | [docs/SUPABASE_PLAN.md](docs/SUPABASE_PLAN.md), [supabase/schema.sql](supabase/schema.sql) |
@@ -114,6 +127,8 @@ To try the AI features locally, copy `.env.example` to `.env` and set
 - [MedlinePlus](https://medlineplus.gov/) and [MedlinePlus en español](https://medlineplus.gov/spanish/),
   U.S. National Library of Medicine. Accessed through the
   [MedlinePlus Web Service](https://medlineplus.gov/about/developers/webservices/).
+  Lab test guides come from [MedlinePlus Lab Tests](https://medlineplus.gov/lab-tests/) through
+  [MedlinePlus Connect](https://medlineplus.gov/medlineplus-connect/web-service/).
   CareBridge is not affiliated with or endorsed by NLM.
 - Question prompts adapted from AHRQ's *Questions Are the Answer* and the
   National Institute on Aging's guidance on talking with your doctor.

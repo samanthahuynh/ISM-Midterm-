@@ -13,6 +13,7 @@ export default function Visit({ ctx }) {
   const visit = useStore((s) => s.appointment);
   const questions = useStore((s) => s.questions);
   const profile = useStore((s) => s.profile);
+  const healthHistory = useStore((s) => s.history || []);
   const step = Math.min(4, Math.max(1, Number(route.param) || 1));
   const [errors, setErrors] = useState({});
   const [tlDate, setTlDateV] = useState("");
@@ -69,6 +70,10 @@ export default function Visit({ ctx }) {
       onDel: () => setAppt({ timeline: visit.timeline.filter((x) => x.id !== e.id) }),
     }));
   const hasTimeline = timelineItems.length > 0;
+  const sheetHistory = healthHistory.map((h) => ({
+    dateLabel: h.when ? formatMonth(h.when, lang) : "—",
+    text: `${h.kind === "test" ? (es ? "Prueba" : "Test") : es ? "Diagnóstico" : "Diagnosis"}: ${h.name}${h.result ? ` — ${h.result}` : ""}`,
+  }));
   const noTimeline = !hasTimeline;
   const setTlDate = (e) => setTlDateV(e.target.value);
   const setTlLabel = (e) => setTlLabelV(e.target.value);
@@ -407,6 +412,7 @@ export default function Visit({ ctx }) {
 {(noConcerns) && (<><p style={{margin: "0", color: "#55635E"}}>No concerns entered. <button data-noprint="" onClick={goStep2} style={{background: "none", border: "none", color: "#3F6E6A", textDecoration: "underline", cursor: "pointer", padding: "0", fontWeight: "600"}}>Add them in step 2</button></p></>)}
 </section>
 {(hasTimeline) && (<><section style={{marginTop: "24px"}}><h2 style={{margin: "0 0 10px", fontSize: "19px", fontWeight: "700", color: "#254D43"}}>Symptom notes</h2><ul style={{margin: "0", padding: "0", listStyle: "none", display: "flex", flexDirection: "column", gap: "6px"}}>{(timelineItems).map((e, __i) => (<React.Fragment key={__i}><li style={{display: "flex", gap: "14px"}}><span style={{fontFamily: "'DM Mono',monospace", fontSize: "13px", color: "#3F6E6A", minWidth: "84px", paddingTop: "2px"}}>{e.dateLabel}</span><span>{e.label}</span></li></React.Fragment>))}</ul></section></>)}
+{(sheetHistory.length > 0) && (<><section style={{marginTop: "24px"}}><h2 style={{margin: "0 0 10px", fontSize: "19px", fontWeight: "700", color: "#254D43"}}>{es ? "Mi historial (escrito por mí)" : "My history (in my words)"}</h2><ul style={{margin: "0", padding: "0", listStyle: "none", display: "flex", flexDirection: "column", gap: "6px"}}>{(sheetHistory).map((h, __i) => (<React.Fragment key={__i}><li style={{display: "flex", gap: "14px"}}><span style={{fontFamily: "'DM Mono',monospace", fontSize: "13px", color: "#3F6E6A", minWidth: "84px", paddingTop: "2px"}}>{h.dateLabel}</span><span>{h.text}</span></li></React.Fragment>))}</ul></section></>)}
 <section style={{marginTop: "24px"}}><h2 style={{margin: "0 0 10px", fontSize: "19px", fontWeight: "700", color: "#254D43"}}>My questions <span style={{fontWeight: "400", fontSize: "14px", color: "#55635E"}}>— ★ priority first</span></h2>
 {(hasQs) && (<><ol style={{margin: "0", padding: "0", listStyle: "none", display: "flex", flexDirection: "column", gap: "10px"}}>{(sheetQs).map((q, __i) => (<React.Fragment key={__i}><li style={{display: "flex", gap: "12px", alignItems: "flex-start", breakInside: "avoid"}}><span style={{width: "18px", height: "18px", border: "1.5px solid #6A9C98", borderRadius: "4px", flex: "none", marginTop: "3px"}}></span><span style={{flex: "1"}}><span style={{fontWeight: q.fw}}>{q.star}{q.text}</span><span style={{display: "block", borderBottom: "1px dashed #C9D3C7", height: "26px"}}></span></span></li></React.Fragment>))}</ol></>)}
 {(noQs) && (<><p style={{margin: "0", color: "#55635E"}}>No questions yet.</p></>)}

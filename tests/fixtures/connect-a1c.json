@@ -1,0 +1,38 @@
+{
+ "feed": {
+  "entry": [
+   {
+    "title": {
+     "_value": "Hemoglobin A1C (HbA1c) Test",
+     "type": "text"
+    },
+    "link": [
+     {
+      "href": "https://medlineplus.gov/lab-tests/hemoglobin-a1c-hba1c-test?utm_source=mplusconnect&utm_medium=service",
+      "rel": "alternate"
+     }
+    ],
+    "summary": {
+     "type": "html",
+     "_value": "What is a hemoglobin A1C (HbA1C) test?\nA hemoglobin A1C (HbA1C) test is a blood test that shows your average level of blood glucose, also called blood sugar, over the past two to three months.\nAn A1C test can show your average glucose level for the past three months because:\n\nGlucose sticks to hemoglobin for as long as the red blood cells are alive.\nRed blood cells live about three months.\n\nHigh A1C levels are a sign of high blood glucose from diabetes.\nOther names: HbA1C, A1C, glycohemoglobin, glycated hemoglobin, glycosylated hemoglobinWhat is it used for?\nYour blood glucose level changes all the time.\nAn A1C test may be used to screen for\u00a0or diagnose:\n\nType 2 diabetes. With type 2 diabetes your blood glucose gets too high.\nPrediabetes. Prediabetes means that your blood glucose levels are higher than normal.\n\nThe A1C test isn't used to diagnose type 1 diabetes\u00a0but may be used for monitoring your blood glucose levels.Why do I need an A1C test?\nYou may also need an A1C test if you have symptoms of diabetes, such as:\n\nFeeling very thirsty\nUrinating (peeing) a lot\nWhat happens during an A1C test?\nA health care professional will take a blood sample from a vein in your arm, using a small needle.What do the results mean?\nA1C results tell you what percentage of your hemoglobin is coated with glucose. Ask your provider what A1C percentage is healthy for you.\nTo diagnose diabetes or prediabetes, the percentages commonly used are:\n\nNormal: A1C below 5.7%\nPrediabetes: A1C between 5.7% and 6.4%\nDiabetes: A1C of 6.5% or higher\n\nProviders often use more than one test to diagnose diabetes.\nLearn more about laboratory tests, reference ranges, and understanding results.Is there anything else I need to know about an A1C test?\nThe A1C test is not used to diagnose gestational diabetes.References\n\nAmerican Diabetes Association [Internet]. Arlington (VA). Available from: https://www.diabetes.org/diabetes/A1C\n"
+    }
+   },
+   {
+    "title": {
+     "_value": "The A1C Test & Diabetes",
+     "type": "text"
+    },
+    "link": [
+     {
+      "href": "https://www.niddk.nih.gov/health-information/diagnostic-tests/a1c-test?utm_medium=ehr+service",
+      "rel": "alternate"
+     }
+    ],
+    "summary": {
+     "type": "html",
+     "_value": "Learn what the A1C test is."
+    }
+   }
+  ]
+ }
+}

@@ -10,6 +10,7 @@ hidden.
 | Task | Where | What is sent to Claude |
 |---|---|---|
 | `simplify` | Topic page, Simple level: "Explain the whole topic in simpler words (AI)" | The MedlinePlus topic text, which **the server fetches itself** from the topic URL. The browser only sends the URL and title. |
+| `simplify` (lab test) | Health history, a test card: "Explain in simpler words (AI)" | The MedlinePlus lab test guide, which the server fetches from MedlinePlus Connect using only the test's LOINC code. The user's result, notes and the name they typed are never sent. |
 | `explain` | Understand page, medical words: "Explain in simpler words" | The word the user typed (screened: letters only, ≤ 5 words, ≤ 60 characters) plus the top MedlinePlus result text for that word. |
 
 Both answers appear with a label saying the text was written by AI from the

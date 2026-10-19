@@ -36,6 +36,7 @@ describe("/api/ai route guards", () => {
       expect((await handler(post({ task: "explain", term: "biopsy" }, { Origin: "https://evil.example" }), {})).status).toBe(403);
       expect((await handler(post({ task: "explain", term: "I'm Maya, born 1990, my knee hurts" }), {})).status).toBe(400);
       expect((await handler(post({ task: "simplify", url: "https://example.com/x.html", title: "X" }), {})).status).toBe(400);
+      expect((await handler(post({ task: "simplify", loinc: "4548-4; my A1C was 9%" }), {})).status).toBe(400);
       expect((await handler(post({ task: "organize", questions: ["anything"] }), {})).status).toBe(400);
     } finally {
       delete process.env.AI_ENABLED;

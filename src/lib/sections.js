@@ -10,6 +10,9 @@ const RULES = {
   before: /prepar|before|antes/i,
   during: /how (is|are|do|does|will)\b.*\b(done|performed|work|happen)|during|what happens|cómo se (hace|hacen|realiza|realizan)|durante|qué (pasa|sucede|ocurre)/i,
   after: /after|recover|después|recupera/i,
+  // Lab test guides
+  usedfor: /used for|para qué se usa|why do i need|por qué necesito/i,
+  results: /results mean|significan los resultados/i,
 };
 
 export function classify(heading = "") {

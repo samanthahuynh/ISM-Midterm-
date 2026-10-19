@@ -47,6 +47,18 @@ export async function getTopic(url, title) {
   return p;
 }
 
+/** A MedlinePlus lab test guide, by LOINC code. */
+export async function getLabTest(loinc, lang) {
+  const key = `loinc:${loinc}:${lang}`;
+  if (topicCache.has(key)) return topicCache.get(key);
+  const p = getJson(`/api/medlineplus?${new URLSearchParams({ loinc, lang })}`).catch((e) => {
+    topicCache.delete(key);
+    throw e;
+  });
+  topicCache.set(key, p);
+  return p;
+}
+
 let aiStatus;
 export function getAiStatus() {
   aiStatus ||= getJson("/api/ai").catch(() => ({ enabled: false }));

@@ -36,7 +36,7 @@ See [`supabase/schema.sql`](../supabase/schema.sql).
 | `appointments` | date, time, type, specialty, clinician, reason, concerns, timeline | `appointment` |
 | `questions` | the current question list, with priority and order | `questions` |
 | `question_lists` | saved snapshots of question lists | `questionLists` |
-| `notebook_entries` | saved topics and procedures, visit sheets, visit notes, care-team notes | `savedTopics`, `savedProcedures`, `visitSheets`, `visitNotes`, `careNotes` |
+| `notebook_entries` | saved topics and procedures, visit sheets, visit notes, care-team notes, health history | `savedTopics`, `savedProcedures`, `visitSheets`, `visitNotes`, `careNotes`, `history` |
 
 Every table has `user_id` and row level security that allows only
 `auth.uid() = user_id`. Text columns have length limits that match the UI.

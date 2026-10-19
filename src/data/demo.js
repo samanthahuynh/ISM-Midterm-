@@ -36,6 +36,10 @@ export function demoState(base) {
         { id: "demo-t2", month: monthsAgo(1), label: "Noticed it while typing at work too (demo)" },
       ],
     },
+    history: [
+      { id: "demo-h1", kind: "condition", name: "Carpal tunnel syndrome (demo)", match: { type: "topic", url: "https://medlineplus.gov/carpaltunnelsyndrome.html", title: "Carpal Tunnel Syndrome" }, when: monthsAgo(2), result: "", note: "Mentioned at my last checkup (demo)", createdAt: now },
+      { id: "demo-h2", kind: "test", name: "Hemoglobin A1C (demo)", match: { type: "loinc", code: "4548-4", title: "Hemoglobin A1C (HbA1c)" }, when: monthsAgo(5), result: "Shown on my portal as 5.4% (demo value)", note: "", createdAt: now },
+    ],
     questions: [
       { id: "demo-q1", text: "What will recovery look like for me?", priority: true, source: "Question builder", createdAt: now },
       { id: "demo-q2", text: "Do I need any tests related to Carpal Tunnel Syndrome?", priority: false, source: "Carpal Tunnel Syndrome", createdAt: now },

@@ -180,7 +180,7 @@ export default function Procedure({ ctx }) {
 
 <div role="tablist" aria-label="Procedure phases" style={{display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "0", marginTop: "28px", background: "#EAF2EB", borderRadius: "22px", padding: "6px"}}>
 {(phases).map((ph, __i) => (<React.Fragment key={__i}>
-<button role="tab" aria-selected={ph.on} onClick={ph.onClick} style={{border: "none", borderRadius: "17px", padding: "14px 12px", cursor: "pointer", background: ph.bg, color: ph.fg, boxShadow: ph.sh, textAlign: "center", transition: "background .2s"}}><span style={{display: "block", fontFamily: "'DM Mono',monospace", fontSize: "11.5px", letterSpacing: ".06em", opacity: ".8"}}>{ph.n}</span><span style={{display: "block", fontWeight: "700", fontSize: "17px"}}>{ph.label}</span></button>
+<button role="tab" aria-selected={ph.on} onClick={ph.onClick} style={{border: "none", borderRadius: "17px", padding: "14px 6px", minWidth: "0", overflowWrap: "anywhere", hyphens: "auto", cursor: "pointer", background: ph.bg, color: ph.fg, boxShadow: ph.sh, textAlign: "center", transition: "background .2s"}}><span style={{display: "block", fontFamily: "'DM Mono',monospace", fontSize: "11.5px", letterSpacing: ".06em", opacity: ".8"}}>{ph.n}</span><span style={{display: "block", fontWeight: "700", fontSize: "17px"}}>{ph.label}</span></button>
 </React.Fragment>))}
 </div>
 

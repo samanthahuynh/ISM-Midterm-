@@ -58,10 +58,11 @@ create table if not exists public.question_lists (
 --   visit_sheet      -> payload { title, snapshot }
 --   visit_note       -> payload { text }
 --   care_note        -> payload { procedure_id, text }
+--   health_history   -> payload { kind, name, match, when, result, note }  (user-entered; never sent to AI)
 create table if not exists public.notebook_entries (
   id         uuid primary key default gen_random_uuid(),
   user_id    uuid not null references auth.users (id) on delete cascade,
-  kind       text not null check (kind in ('saved_topic','saved_procedure','visit_sheet','visit_note','care_note')),
+  kind       text not null check (kind in ('saved_topic','saved_procedure','visit_sheet','visit_note','care_note','health_history')),
   payload    jsonb not null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()

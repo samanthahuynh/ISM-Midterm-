@@ -11,6 +11,7 @@ const ICONS = {
   clipboard: "M9 2h6v4H9zM16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 12h6M9 16h4",
   chat: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2zM9 9h6M9 13h3",
   steps: "M4 17h4v-4h4V9h4V5h4",
+  history: "M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2",
 };
 
 export default function Dashboard({ ctx }) {
@@ -18,6 +19,7 @@ export default function Dashboard({ ctx }) {
   const appt = useStore((s) => s.appointment);
   const questions = useStore((s) => s.questions);
   const recent = useStore((s) => s.recent);
+  const history = useStore((s) => s.history || []);
   const [tipIdx, setTipIdx] = useState(() => new Date().getDate() % TIPS.length);
   const es = lang === "es";
 
@@ -25,6 +27,11 @@ export default function Dashboard({ ctx }) {
   const goSummary = () => navigate("/visit/4");
   const goBuilder = () => navigate("/visit/3");
   const goUnderstand = () => navigate("/understand");
+  const goHistory = () => navigate("/history");
+  const historyCount = history.length;
+  const historyDesc = historyCount
+    ? es ? `${historyCount} diagnóstico(s) y prueba(s), explicados con MedlinePlus.` : `${historyCount} diagnos${historyCount === 1 ? "is or test" : "es and tests"}, explained with MedlinePlus.`
+    : es ? "Agregue diagnósticos y pruebas pasadas para ver qué significan." : "Add past diagnoses and tests to see what they mean.";
 
   const { pct } = visitProgress(appt, questions);
   const apptDate = appt.date ? formatDate(appt.date, lang) : es ? "Sin cita guardada" : "No appointment saved yet";
@@ -100,6 +107,12 @@ export default function Dashboard({ ctx }) {
 </H>
 </React.Fragment>))}
 </div>
+
+<H as="button" onClick={goHistory} style={{width: "100%", marginTop: "16px", textAlign: "left", background: "#F4F7F2", border: "1px solid #E2E8E0", borderRadius: "26px", padding: "22px 24px", cursor: "pointer", display: "flex", gap: "18px", alignItems: "center", flexWrap: "wrap"}} hover={{background: "#EAF2EB"}}>
+<span style={{width: "48px", height: "48px", borderRadius: "15px", background: "#FFFEFB", display: "grid", placeItems: "center", color: "#254D43", flex: "none"}}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={ICONS.history}></path></svg></span>
+<span style={{flex: "1", minWidth: "220px", display: "flex", flexDirection: "column", gap: "4px"}}><span style={{fontSize: "21px", fontWeight: "600", letterSpacing: "-.02em", color: "#254D43"}}>{es ? "Mi historial de salud" : "My health history"}</span><span style={{fontSize: "15px", color: "#3D4A45"}}>{historyDesc}</span></span>
+<span aria-hidden="true" style={{fontSize: "22px", color: "#254D43"}}>→</span>
+</H>
 
 <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,360px),1fr))", gap: "16px", marginTop: "16px"}}>
 <div style={{background: "#FFFEFB", border: "1px solid #E2E8E0", borderRadius: "26px", padding: "26px", display: "flex", flexDirection: "column", gap: "14px"}}>
