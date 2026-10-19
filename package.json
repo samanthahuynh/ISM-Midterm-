@@ -1,0 +1,33 @@
+{
+  "name": "carebridge",
+  "private": true,
+  "version": "0.1.0",
+  "description": "CareBridge: healthcare explained your way. Patient education and visit preparation prototype.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:ui": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "jsdom": "^29.1.1",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}
